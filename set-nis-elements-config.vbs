@@ -29,10 +29,10 @@ If intAnswer = vbYes Then
     cmd = "robocopy.exe " & strSource & " " & strDest & " " & strParams
     status = wshShell.Run(cmd, 0, True)
     If status > 1 Then
-        StdOut.Write "robocopy status: " & CStr(status)
+        StdOut.Write "robocopy status: " & CStr(status) & vbNewLine
         StdOut.Write "copy incomplete - please examine log file: " & strLogFile
     Else
-        StdOut.Write "robocopy status: " & CStr(status)
+        StdOut.Write "robocopy status: " & CStr(status) & vbNewLine
         StdOut.Write "copy completed without issue"
     End If
 
