@@ -15,19 +15,26 @@ intAnswer = _
         vbYesNo, "Set default layout")
 If intAnswer = vbYes Then
     
-    strDest = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) &  "\Platform\" & strName
-    strSource = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) &  "\Platform\default"
+    strDest = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) & "\Platform\" & strName
+    strSource = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) & "\Platform\default"
 
-    strLogDest = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) &  "\Platform\"
-    strParams = "/e /log:" & strLogDest ' e for entire folder structure, and log file
+    strLogFile = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) _
+                 & "\Platform\" & strName & "_rc.log"
+    strParams = "/e /log:" & strLogFile ' e for entire folder structure, and log file
 
-    tmpDest = "C:\tmp\temp2"
-    tmpSource = "C:\tmp\temp1"
-    'If Not fso.FolderExists( strRoot & strName ) Then
-    '   
-    cmd = "robocopy.exe " & tmpSource & " " & tmpDest & " /e /log:C:\tmp\robocopy.log"
+    'If Not fso.FolderExists( strDest ) Then
+    '   ...
+    'End If
+
+    cmd = "robocopy.exe " & strSource & " " & strDest & " " & strParams
     status = wshShell.Run(cmd, 0, True)
-    StdOut.Write "robocopy status: " & CStr(status)
+    If status > 1 Then
+        StdOut.Write "robocopy status: " & CStr(status)
+        StdOut.Write "copy incomplete - please examine log file: " & strLogFile
+    Else
+        StdOut.Write "robocopy status: " & CStr(status)
+        StdOut.Write "copy completed without issue"
+    End If
 
 End If
 
