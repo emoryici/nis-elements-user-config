@@ -20,18 +20,21 @@ intAnswer = _
 If intAnswer = vbYes Then
     
     ' Chr(34) is " required for spaces in cmd line 
-    strDest = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) & "\Platform\" & strUsername
-    strSource = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) & "\Platform\default"
-
-    strLogFile = "C:\ProgramData\" & Chr(34) & "Laboratory Imaging" & Chr(34) _
-                 & "\Platform\" & strUsername & "_rc.log"
-    strParams = "/e /log:" & strLogFile ' e for entire folder structure, and log file
+    'C:\ProgramData\Laboratory Imaging\Platform
+    strDest = """C:/ProgramData/Laboratory Imaging/Platform/" & strUsername & "/"""
+    strSource = """C:/ProgramData/Laboratory Imaging/Platform/default/"""
+    strLogFile = """C:/ProgramData/Laboratory Imaging/Platform/" & strUsername & "_rc.txt"""
+    ' /is for same files, and /it for different - both means all
+    ' e for entire folder structure, /v verbose and /log file
+    strParams = "/mir /e /v /log:" & strLogFile
 
     'If Not fso.FolderExists( strDest ) Then
     '   ...
     'End If
-
+    
     cmd = "robocopy.exe " & strSource & " " & strDest & " " & strParams
+    StdOut.Write "robocopy command: " & cmd & vbNewLine
+
     status = wshShell.Run(cmd, 0, True)
     ' see below for status codes returned by robocopy
     If status > 1 Then
